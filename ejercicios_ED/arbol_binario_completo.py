@@ -90,7 +90,7 @@ for _ in range(int(input())):
             tree.insert(k)
 
     completo = "completo"
-    altura = 1
+    altura = 0
 
     for i in tree.dict:
         altura = max(tree.dict[i], altura)
@@ -100,8 +100,8 @@ for _ in range(int(input())):
     for i in tree.dict:
         altura_nodos[tree.dict[i]] += 1
  
-    for i in range(0, len(altura_nodos)):
-        if altura_nodos[i] != 2**i:
-            completo = "no"
+
+    if altura_nodos[-1] != 2**(altura):
+        completo = "no"
 
     print(completo)
