@@ -167,11 +167,28 @@ class AVLTree(object):
             self.delete(key)
             return key
         
-for _ in range(1):
+
+    def searchCopy(self, key):
+        return self._searchRecursivelyCopy(self.root, key, 0)
+
+    def _searchRecursivelyCopy(self, root, key, x):
+        if root is None or root.key == key:
+            return x
+        if key < root.key:
+            return self._searchRecursivelyCopy(root.left, key, x + 1)  # Cambiado a _searchRecursivelyCopy
+        else:
+            return self._searchRecursivelyCopy(root.right, key, x + 1)  # Cambiado a _searchRecursivelyCopy
+
+for _ in range(int(input())):
     tree = AVLTree()
-    x = [1, 2, 3, 4, 5, 6]
+    x = list(map(int,input().split()))
     for i in x:   
         tree.insert(i)
+    cont = 0
+    print(tree.inOrder())
+    for i in tree.inOrder():
+        if tree.searchCopy(i) == tree.root.height-1:
+            cont += 1
 
-    print(tree.height)
+    print(cont)
     
