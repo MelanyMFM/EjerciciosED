@@ -175,17 +175,18 @@ class AVLTree(object):
         if root is None or root.key == key:
             return x
         if key < root.key:
-            return self._searchRecursivelyCopy(root.left, key, x + 1)  # Cambiado a _searchRecursivelyCopy
+            return self._searchRecursivelyCopy(root.left, key, x + 1)  
         else:
-            return self._searchRecursivelyCopy(root.right, key, x + 1)  # Cambiado a _searchRecursivelyCopy
+            return self._searchRecursivelyCopy(root.right, key, x + 1)  
 
 for _ in range(int(input())):
     tree = AVLTree()
     x = list(map(int,input().split()))
-    for i in x:   
-        tree.insert(i)
+    for i in x: 
+        if i != -1:  
+            tree.insert(i)
     cont = 0
-    print(tree.inOrder())
+
     for i in tree.inOrder():
         if tree.searchCopy(i) == tree.root.height-1:
             cont += 1
