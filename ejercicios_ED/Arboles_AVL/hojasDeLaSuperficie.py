@@ -1,3 +1,4 @@
+from collections import deque
 
 class Node(object):
     def __init__(self, key):
@@ -5,6 +6,17 @@ class Node(object):
         self.left = None
         self.right = None
         self.height = 1
+
+    def children(self):
+        
+        if self.left and self.right:
+            return 2
+        if self.left and self.right == None:
+            return -1
+        if self.left == None and self.right:
+            return 1
+        if self.left == None and self.right == None:
+            return 0
 
 class AVLTree(object):
     def __init__(self):
@@ -159,6 +171,25 @@ class AVLTree(object):
             self._posOrderRecursively(root.right, elements)
             elements.append(root.key)
 
+    def order(self):
+        if not self.root:
+            return []
+
+        elements = []
+        queue = deque([self.root])
+
+        while queue:
+            node = queue.popleft()
+            elements.append(node)
+
+            # Alternar entre izquierda y derecha al agregar hijos a la cola
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+        return elements
+
     def popMin(self):
         if self.size == 0:
             return None
@@ -168,28 +199,23 @@ class AVLTree(object):
             return key
         
 
-    def searchCopy(self, key):
-        return self._searchRecursivelyCopy(self.root, key, 0)
+    
 
-    def _searchRecursivelyCopy(self, root, key, x):
-        if root is None or root.key == key:
-            return x
-        if key < root.key:
-            return self._searchRecursivelyCopy(root.left, key, x + 1)  
-        else:
-            return self._searchRecursivelyCopy(root.right, key, x + 1)  
+while True:
+    cant = int(input())
+    if cant == 0:
+        break
 
-for _ in range(int(input())):
     tree = AVLTree()
-    x = list(map(int,input().split()))
+    x = list(map(int, input().split()))
     for i in x: 
-        if i != -1:  
-            tree.insert(i)
-    cont = 0
+        tree.insert(i)
 
-    for i in tree.inOrder():
-        if tree.searchCopy(i) == tree.root.height-1:
-            cont += 1
+    for i in tree.order():
+        if i != tree.order()[-1]:
+            print(i.children(), end=".")
 
-    print(cont)
+    print(tree.order()[-1].children())
+   
+    
     
