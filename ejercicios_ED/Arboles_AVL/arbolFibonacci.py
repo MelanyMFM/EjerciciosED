@@ -1,4 +1,3 @@
-from collections import deque
 
 class Node(object):
     def __init__(self, key):
@@ -7,22 +6,10 @@ class Node(object):
         self.right = None
         self.height = 1
 
-    def children(self):
-        
-        if self.left and self.right:
-            return 2
-        if self.left and self.right == None:
-            return -1
-        if self.left == None and self.right:
-            return 1
-        if self.left == None and self.right == None:
-            return 0
-
 class AVLTree(object):
     def __init__(self):
         self.size = 0
         self.root = None
-        self.height = 0
 
     def insert(self, key):
         if not self.search(key):
@@ -32,7 +19,6 @@ class AVLTree(object):
         if not root:
             new_node = Node(key)
             self.size += 1
-            
             return new_node
         elif key < root.key:
             root.left = self._insertRecursively(root.left, key)
@@ -171,25 +157,6 @@ class AVLTree(object):
             self._posOrderRecursively(root.right, elements)
             elements.append(root.key)
 
-    def order(self):
-        if not self.root:
-            return []
-
-        elements = []
-        queue = deque([self.root])
-
-        while queue:
-            node = queue.popleft()
-            elements.append(node)
-
-            # Alternar entre izquierda y derecha al agregar hijos a la cola
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-
-        return elements
-
     def popMin(self):
         if self.size == 0:
             return None
@@ -198,24 +165,14 @@ class AVLTree(object):
             self.delete(key)
             return key
         
-
-    
-
-while True:
-    cant = int(input())
-    if cant == 0:
-        break
-
+for _ in range(int(input())):
     tree = AVLTree()
-    x = list(map(int, input().split()))
-    for i in x: 
-        tree.insert(i)
+    x = input().split()
+    for i in x:
+        if i != '#':
+            tree.insert(i)
 
-    for i in tree.order():
-        if i != tree.order()[-1]:
-            print(i.children(), end=".")
-
-    print(tree.order()[-1].children())
-   
-    
+    for i in tree.posOrder():
+        print(i, end="")
+    print()
     

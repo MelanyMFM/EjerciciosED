@@ -1,3 +1,4 @@
+from collections import deque
 
 class Node(object):
     def __init__(self, key):
@@ -5,6 +6,17 @@ class Node(object):
         self.left = None
         self.right = None
         self.height = 1
+
+    def children(self):
+        
+        if self.left and self.right:
+            return 2
+        if self.left and self.right == None:
+            return -1
+        if self.left == None and self.right:
+            return 1
+        if self.left == None and self.right == None:
+            return 0
 
 class AVLTree(object):
     def __init__(self):
@@ -159,17 +171,24 @@ class AVLTree(object):
             self._posOrderRecursively(root.right, elements)
             elements.append(root.key)
 
+    def order(self):
+        if not self.root:
+            return []
 
-    def preOrder(self):
         elements = []
-        self._preOrderRecursively(self.root, elements)
+        queue = deque([self.root])
+
+        while queue:
+            node = queue.popleft()
+            elements.append(node)
+
+            # Alternar entre izquierda y derecha al agregar hijos a la cola
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
         return elements
-    
-    def _preOrderRecursively(self, root, elements):
-        if root:
-            elements.append(root.key)
-            self._preOrderRecursively(root.left, elements)
-            self._preOrderRecursively(root.right, elements)
 
     def popMin(self):
         if self.size == 0:
@@ -180,36 +199,23 @@ class AVLTree(object):
             return key
         
 
-    def searchCopy(self, key):
-        return self._searchRecursivelyCopy(self.root, key)
-
-    def _searchRecursivelyCopy(self, root, key):
-        if root is None or root.key == key:
-
-
-            if root.left != None and root.right != None:
-                return 2
-            elif root.left != None and root.right == None:
-                return -1
-            elif root.left == None and root.right != None:
-                return 1
-            else:
-                return 0
-        if key < root.key:
-            return self._searchRecursivelyCopy(root.left, key)  
-        else:
-            return self._searchRecursivelyCopy(root.right, key)
     
 
-for _ in range(int(input())):
+while True:
+    cant = int(input())
+    if cant == 0:
+        break
+
     tree = AVLTree()
-    x = list(map(int,input().split()))
+    x = list(map(int, input().split()))
     for i in x: 
         tree.insert(i)
 
+    for i in tree.order():
+        if i != tree.order()[-1]:
+            print(i.children(), end=".")
 
-    for i in tree.preOrder():
-        print(tree.searchCopy(i), end=".")
-
-    print()
+    print(tree.order()[-1].children())
+   
+    
     
