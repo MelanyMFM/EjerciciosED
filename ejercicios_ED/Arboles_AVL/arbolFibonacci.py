@@ -1,3 +1,11 @@
+from collections import deque
+
+def fibonacci(n):
+    fib = [1, 2]
+    for i in range(2, n):
+        fib.append(fib[i-1] + fib[i-2])
+
+    return fib
 
 class Node(object):
     def __init__(self, key):
@@ -5,6 +13,9 @@ class Node(object):
         self.left = None
         self.right = None
         self.height = 1
+
+    def __repr__(self):
+        return str(self.key)
 
 class AVLTree(object):
     def __init__(self):
@@ -164,15 +175,82 @@ class AVLTree(object):
             key = self._getMin(self.root)
             self.delete(key)
             return key
+
+    def derecha(self):
+        elements = []
+        self._derecharecur(self.root, elements)
+        return elements
+
+    def _derecharecur(self, root, elements):
+        if root:
+            self._derecharecur(root.right, elements)
+            elements.append(root)
+            self._derecharecur(root.left, elements)
         
+
+    def search(self, key):
+        return self._searchRecursively(self.root, key)
+
+    def _searchRecursively(self, root, key):
+        if root is None or root.key == key:
+            return root
+        if key < root.key:
+            return self._searchRecursively(root.left, key)
+        else:
+            return self._searchRecursively(root.right, key)
+        
+    def order(self):
+        if not self.root:
+            return []
+
+        elements = []
+        queue = deque([self.root])
+
+        while queue:
+            node = queue.popleft()
+            elements.append(node)
+
+            # Alternar entre izquierda y derecha al agregar hijos a la cola
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+        return elements
+
+
 for _ in range(int(input())):
     tree = AVLTree()
-    x = input().split()
-    for i in x:
-        if i != '#':
-            tree.insert(i)
+    n = int(input())
+    for i in fibonacci(n):
+        tree.insert(i)
 
-    for i in tree.posOrder():
-        print(i, end="")
+    
+    elements = tree.order()
+    cont = 0
+    idx = 0
+    alt = 0
+    alturas = {}
+    while idx < len(elements):
+        for _ in range(2**cont):
+            if idx < len(elements): alturas[elements[idx]] = alt
+            idx += 1
+
+        if idx > len(elements): break
+
+        alt += 1
+
+        cont += 1
+
+
+
+    
+    for i in tree.derecha():
+        
+        print(f'{(alturas[i])*"        "}{i.key}')
+        
     print()
+
+    
+
     
