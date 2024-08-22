@@ -1,0 +1,1 @@
+{"name":"Local: coleccionPokemones","url":"/workspaces/Javascript/ejercicios_ED/Sets/coleccionPokemones.py","tests":[{"id":1724335557186,"input":"V 13\nF 10\nF 12\nV 10\nF 11\nV 14\nV 13\n#\n","output":"3 3 5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/Javascript/ejercicios_ED/Sets/coleccionPokemones.py","group":"local","local":true}
