@@ -1,0 +1,1 @@
+{"name":"Local: poblacionKonoha","url":"/workspaces/Javascript/ejercicios_ED/Sets/poblacionKonoha.py","tests":[{"id":1724336254323,"input":"B 1001\nB 1003\nB 1002\nD 1003\nB 1001\nD 1002\nR 1003\nE","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/Javascript/ejercicios_ED/Sets/poblacionKonoha.py","group":"local","local":true}
