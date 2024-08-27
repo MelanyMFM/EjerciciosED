@@ -1,5 +1,12 @@
 from collections import deque
 
+def fibonacci(n):
+    fib = [1, 2]
+    for i in range(2, n):
+        fib.append(fib[i-1] + fib[i-2])
+
+    return fib
+
 class Node(object):
     def __init__(self, key):
         self.key = key
@@ -212,72 +219,13 @@ class AVLTree(object):
         return elements
 
 
-    
-while True:
-    n = int(input())
+for _ in range(int(input())):
     tree = AVLTree()
-    completo = False
-    if n == 0: break
-    else:
-        x = list(map(int, input().split()))
-        if len(x) == 0:
-            print(0)
-            completo = True
-        for i in x: tree.insert(i) 
-
+    n = int(input())
+    for i in fibonacci(n):
+        if i != -1: tree.insert(i)
 
     
-    elements = tree.order()
-    cont, idx, alt, alturas= 0, 0,0,{}
-
-    while idx < len(elements):
-        for _ in range(2**cont):
-            if idx < len(elements): alturas[elements[idx]] = alt
-            idx += 1
-        if idx > len(elements): break
-        alt += 1
-        cont += 1
-
-
-    las = []
-
-    maxH = 0
-    for i in alturas:
-        if alturas[i] > maxH: maxH = alturas[i]
-
-
-    for i in alturas: 
-        if alturas[i] == maxH: las.append(i)
-
-    if not completo and len(las) == 2**(alt-1):
-        print(alt)
-        completo = True
-
-
-    if not completo:
-        penul  =[]
-        for i in alturas: 
-            if alturas[i] == maxH-1: penul.append(i)
-
-
-        for i in penul:
-            
-            if i.left != None and i.right != None:
-                print(alt-1)
-                completo = True
-                
-
-    if not completo:
-        print(1)
-    
-
-        
-
-    
-
-    
-   
-
     
 
     
