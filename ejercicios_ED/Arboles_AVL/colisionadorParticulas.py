@@ -1,21 +1,11 @@
 from collections import deque
 
-def fibonacci(n):
-    fib = [1, 2]
-    for i in range(2, n):
-        fib.append(fib[i-1] + fib[i-2])
-
-    return fib
-
 class Node(object):
     def __init__(self, key):
         self.key = key
         self.left = None
         self.right = None
         self.height = 1
-
-    def __repr__(self):
-        return str(self.key)
 
 class AVLTree(object):
     def __init__(self):
@@ -135,6 +125,13 @@ class AVLTree(object):
             return root.key
         return self._getMin(root.left)
 
+    def _getMax(self, root):
+        if root is None:
+            return None
+        elif root.right is None:
+            return root.key
+        return self._getMax(root.right)
+
     def search(self, key):
         return self._searchRecursively(self.root, key) != None
 
@@ -161,8 +158,8 @@ class AVLTree(object):
         elements = []
         self._posOrderRecursively(self.root, elements)
         return elements
-    
-    def _posOrderRecursively(self,root, elements):
+
+    def _posOrderRecursively(self, root, elements):
         if root:
             self._posOrderRecursively(root.left, elements)
             self._posOrderRecursively(root.right, elements)
@@ -175,57 +172,72 @@ class AVLTree(object):
             key = self._getMin(self.root)
             self.delete(key)
             return key
+    
+    def leafNodesLastLevel(self):
+        self.leafsll = 0
+        self.maxh = self._getNodeHeight(self.root)
+        self._leafNodesLastLevelRecursively(self.root, 1)
+        return self.leafsll
 
-    def derecha(self):
-        elements = []
-        self._derecharecur(self.root, elements)
-        return elements
+    def _leafNodesLastLevelRecursively(self, root, height):
+        if not root:
+            return
+        if not root.left and not root.right and (height == self.maxh):
+            self.leafsll += 1
+        self._leafNodesLastLevelRecursively(root.left, height + 1)
+        self._leafNodesLastLevelRecursively(root.right, height + 1)
 
-    def _derecharecur(self, root, elements):
-        if root:
-            self._derecharecur(root.right, elements)
-            elements.append(root)
-            self._derecharecur(root.left, elements)
+    def rings(self):
+        self.ring = ""
+        self.bfs = deque([self.root])
+
+        while self.bfs:
+            act = self.bfs.popleft()
+            if act.left and act.right:
+                self.ring +="2."
+                self.bfs.append(act.left)
+                self.bfs.append(act.right)
+            elif act.left and not act.right:
+                self.ring += "-1."
+                self.bfs.append(act.left)
+            elif not act.left and act.right:
+                self.ring += "1."
+                self.bfs.append(act.right)
+            else:
+                self.ring += "0."
         
+        self.ring = self.ring[:-1]
+        return self.ring
+    
+    def printTree(self):
+        self.lines = []
+        self._printTreeRecursively(self.root)
+        return self.lines
 
-    def search(self, key):
-        return self._searchRecursively(self.root, key)
-
-    def _searchRecursively(self, root, key):
-        if root is None or root.key == key:
-            return root
-        if key < root.key:
-            return self._searchRecursively(root.left, key)
+    def _printTreeRecursively(self, root, level=0):
+        if not root:
+            return
         else:
-            return self._searchRecursively(root.right, key)
-        
-    def order(self):
-        if not self.root:
-            return []
-
-        elements = []
-        queue = deque([self.root])
-
-        while queue:
-            node = queue.popleft()
-            elements.append(node)
-
-            # Alternar entre izquierda y derecha al agregar hijos a la cola
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-
-        return elements
+            self._printTreeRecursively(root.right, level + 1)
+            self.lines.append("	"*level + str(root.key))
+            self._printTreeRecursively(root.left, level + 1)
+    
+    def particles(self):
+        while self.size > 1:
+            peq = self._getMin(self.root)
+            grand = self._getMax(self.root)
+            diferencia = grand - peq
+            self.delete(peq)
+            self.delete(grand)
+            if not self.search(diferencia):
+                self.insert(diferencia)
+        return self.root.key
 
 
 for _ in range(int(input())):
+    x = list(map(int, input().split()))
     tree = AVLTree()
-    n = int(input())
-    for i in fibonacci(n):
-        if i != -1: tree.insert(i)
+    for i in x:
+        if i != -1: tree.insert(i)        
+    print(tree.particles())
 
-    
-    
-
-    
