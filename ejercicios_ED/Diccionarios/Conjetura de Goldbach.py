@@ -1,5 +1,4 @@
 from collections import deque
-from bisect import bisect_left as bis
 
 def primos(n):
 
