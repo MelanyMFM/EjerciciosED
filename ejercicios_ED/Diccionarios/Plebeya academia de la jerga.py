@@ -1,17 +1,17 @@
-
+from collections import deque
 
 diccionario = set()
 
 def compuesta(palabra):
     global diccionario
-
+    combinaciones = deque()
 
     for i in range(1, len(palabra)):
         primera =palabra[:i]
         segunda = palabra[i:]
-        if primera in diccionario and segunda in diccionario: return [primera, segunda]
+        if primera in diccionario and segunda in diccionario: combinaciones.append([primera, segunda])
             
-    return []
+    return combinaciones
 
 while True:
     x = input()
@@ -24,7 +24,9 @@ compuestas = []
 for i in diccionario:
     lis = compuesta(i)
     if len(lis) > 0:
-        compuestas.append([i, lis[0], lis[1]])
+
+        for j in lis: compuestas.append([i, j[0], j[1]])
+
 
 
 lista_ordenada = sorted(compuestas, key=lambda x: (x[0], x[1], x[2]))
