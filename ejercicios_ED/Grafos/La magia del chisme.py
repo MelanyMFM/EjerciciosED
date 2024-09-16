@@ -31,6 +31,7 @@ for kk in popo:
     for ola in personas:
         ola.segunda = False
         ola.escucho_chisme = False
+        ola.dia = 0
 
     originoChisme = kk
     q = deque()
