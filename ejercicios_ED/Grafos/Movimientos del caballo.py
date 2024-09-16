@@ -22,8 +22,37 @@ def saltos(i, j):
 
 
 letra = lambda x: ord(x) - 65
+for _ in range(int(input())):
+    dict = {}
+    ya  = set()
 
-a, b = input().split()
-a, b = list(a), list(b)
-a[1], b[1] = int(a[1]), int(b[1])
+    a, b = input().split()
+    a, b = list(a), list(b)
+    a[1], b[1], a[0], b[0] = int(a[1])-1, int(b[1])-1, letra(a[0]), letra(b[0])
+    a, b = tuple(a), tuple(b)
+
+
+    s = deque()
+    s.append(a)
+    dict[a] = 0
+    encontrado = False
+    ya.add(a)
+
+    while len(s) > 0 and not encontrado:
+        u = s.popleft()
+
+        for i in saltos(u[0], u[1]):
+            if i not in ya:
+                dict[i] = dict[u] + 1
+
+                ya.add(i)
+                s.append(i)
+                if i == b:
+                    encontrado = True
+                    break
+
+                
+
+
+    print(dict[b])
 
