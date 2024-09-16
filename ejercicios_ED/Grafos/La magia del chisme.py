@@ -56,13 +56,16 @@ for kk in popo:
         if peppa.dia not in dias: dias[peppa.dia] = 1
         else: dias[peppa.dia] += 1
 
-
     max = 0
     cant = 0
     for i in dias:
         if cant < dias[i]:
             cant = dias[i]
             max = i
+
+        elif cant == dias[i]:
+            if max > i and i != 0:
+                max = i
 
     if max != 0 and cant != 0: print(max, cant)
     else: print(0)
