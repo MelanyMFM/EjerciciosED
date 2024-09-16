@@ -7,7 +7,6 @@ class Persona:
         self.conto_chisme = 0
         self.escucho_chisme = False
         self.dia = 0
-        self.segunda = False
 
 
 personas = [Persona(i) for i in range(int(input()))]
@@ -50,20 +49,11 @@ for kk in popo:
                 q.append(v)
 
     dias = {}
-    q = deque()
-    q.append(personas[originoChisme])
-    personas[originoChisme].segunda = True
 
-    while len(q) > 0:
-        u = q.popleft()
 
-        for v in u.amigos:
-            if v.segunda == False:
-                v.segunda = True
-
-                if v.dia not in dias: dias[v.dia] = 1
-                else: dias[v.dia] += 1
-                q.append(v)
+    for peppa in personas:
+        if peppa.dia not in dias: dias[peppa.dia] = 1
+        else: dias[peppa.dia] += 1
 
 
     max = 0
